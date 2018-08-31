@@ -1,0 +1,23 @@
+server:
+  port: 8081
+logging:
+  level:
+    root: info
+    com.sandman.blog.dao.mysql: DEBUG
+
+#39.104.80.30
+spring:
+  #数据库配置
+  datasource:
+    mysql:
+      #用户数据库配置，存放用户数据
+      user:
+        jdbcUrl: jdbc:mysql://localhost:3306/tools?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+        username: sunpeikai
+        password: spkzq521
+        driver-class-name: com.mysql.jdbc.Driver
+  thymeleaf:
+    cache: false
+    mode: HTML5
+  mvc:
+    static-path-pattern: /**

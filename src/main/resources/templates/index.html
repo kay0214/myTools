@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Test20</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../static/css/bootstrap-theme.css" th:href="@{/css/bootstrap-theme.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">访问Model</h3>
+    </div>
+    <div class="panel-body">
+        <span>haha,这是首页</span>
+    </div>
+</div>
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>省</td>
+                <td>市</td>
+                <td>县</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>哈哈</td>
+                <td>呵呵</td>
+                <td>嘿嘿</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!--<div th:if="${not #lists.isEmpty(people)}">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">列表</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="person:${people}">
+                    <span th:text="${person.name}"></span>
+                    <span th:text="${person.age}"></span>
+                    <button class="btn" th:onclick="'getName(\''+${person.name}+'\');'">获得名字</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>-->
+<!--<script th:inline="javascript">
+    var single = [[${singlePerson}]];
+    console.log(single.name+"/"+single.age);
+    function getName(name) {
+        console.log(name);
+    }
+</script>-->
+</body>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</html>

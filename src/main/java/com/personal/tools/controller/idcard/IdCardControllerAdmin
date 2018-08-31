@@ -1,0 +1,37 @@
+    @ResponseBody
+    @GetMapping(value = "/importPro")
+    public String importPro(){
+        boolean isSuccess = idCardService.insertPro();
+        if(isSuccess){
+            return "ok";
+        }else{
+            return "error";
+        }
+
+    }
+    @ResponseBody
+    @GetMapping(value = "/importCity")
+    public String importCity(){
+        boolean isSuccess = idCardService.insertCity();
+        if(isSuccess){
+            return "ok";
+        }else{
+            return "error";
+        }
+
+    }
+    @ResponseBody
+    @GetMapping(value = "/importCounty")
+    public String importCounty(){
+        boolean isSuccess = idCardService.insertCounty();
+        if(isSuccess){
+            return "ok";
+        }else{
+            return "error";
+        }
+    }
+    @ResponseBody
+    @GetMapping(value = "/countData")
+    public Integer countData(Integer type){
+        return idCardService.countData(type);
+    }

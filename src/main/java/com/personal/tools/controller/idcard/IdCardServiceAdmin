@@ -1,0 +1,203 @@
+
+    public boolean insertPro(){
+        Long startTime = System.currentTimeMillis();
+        int line = 0;
+        try {
+            File file = new File("C:\\Users\\Administrator\\Desktop\\id.txt");
+            if(file.exists()){
+                int count = 0;
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                String read;
+                while((read = bufferedReader.readLine())!=null){
+                    line ++ ;
+                    String[] codeAndName = read.split(",");
+                    String code = codeAndName[0];
+                    String name = codeAndName[1];
+                    IdCard idCard = new IdCard();
+                    if(Integer.valueOf(code)%10000==0){
+                        // 省级城市
+                        count ++ ;
+                        idCard.setProvinceCode(code.substring(0,2));
+                        idCard.setProvinceName(name);
+                        idCard.setCreateBy(1);
+                        idCard.setCreateTime(new Date());
+                        idCard.setUpdateBy(1);
+                        idCard.setUpdateTime(new Date());
+                        idCardMapper.insert(idCard);
+                    }
+
+                }
+                System.out.println("总数量:" + count);
+                bufferedReader.close();
+                System.out.println("耗时:" + (System.currentTimeMillis() - startTime) + "ms");
+            }
+
+            return true;
+        }catch (Exception e){
+            System.out.println("第[" + line + "]行出错!");
+            return false;
+        }
+
+
+    }
+    public boolean insertCity(){
+        Long startTime = System.currentTimeMillis();
+        int line = 0;
+        try {
+            File file = new File("C:\\Users\\Administrator\\Desktop\\id.txt");
+            if(file.exists()){
+                int count = 0;
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                String read;
+                while((read = bufferedReader.readLine())!=null){
+                    line ++ ;
+                    String[] codeAndName = read.split(",");
+                    String code = codeAndName[0];
+                    String name = codeAndName[1];
+                    IdCard idCard = new IdCard();
+                    if(Integer.valueOf(code)%10000!=0 && Integer.valueOf(code)%100==0){
+                        // 市级城市
+                        count ++ ;
+                        String proCode = code.substring(0,2);
+                        String cityCode = code.substring(0,4);
+
+                        IdCardExample example = new IdCardExample();
+                        IdCardExample.Criteria criteria = example.createCriteria();
+                        criteria.andProvinceCodeEqualTo(proCode);
+                        List<IdCard> provinceList = idCardMapper.selectByExample(example);
+                        if(!CollectionUtils.isEmpty(provinceList)){
+                            IdCard province = provinceList.get(0);
+
+                            idCard.setProvinceCode(province.getProvinceCode());
+                            idCard.setProvinceName(province.getProvinceName());
+                            idCard.setCityCode(cityCode);
+                            idCard.setCityName(name.replaceAll(province.getProvinceName(),""));
+                            idCard.setCreateBy(1);
+                            idCard.setCreateTime(new Date());
+                            idCard.setUpdateBy(1);
+                            idCard.setUpdateTime(new Date());
+                            idCardMapper.insert(idCard);
+                        }else{
+                            System.out.println("失败code:" + code);
+                        }
+
+                    }
+
+                }
+                System.out.println("总数量:" + count);
+                bufferedReader.close();
+                System.out.println("耗时:" + (System.currentTimeMillis() - startTime) + "ms");
+            }
+
+            return true;
+        }catch (Exception e){
+            System.out.println("第[" + line + "]行出错!");
+            return false;
+        }
+
+
+    }
+    public boolean insertCounty(){
+        Long startTime = System.currentTimeMillis();
+        int line = 0;
+        try {
+            File file = new File("C:\\Users\\Administrator\\Desktop\\id.txt");
+            if(file.exists()){
+                int count = 0;
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                String read;
+                while((read = bufferedReader.readLine())!=null){
+                    line ++ ;
+                    String[] codeAndName = read.split(",");
+                    String code = codeAndName[0];
+                    String name = codeAndName[1];
+                    IdCard idCard = new IdCard();
+                    if(Integer.valueOf(code)%100!=0){
+                        if("4600".equals(code.substring(0,4))){
+                            // 海南特殊处理
+                            System.out.println("海南特殊处理:[" + code + "]");
+                            IdCard hainan = new IdCard();
+                            hainan.setProvinceCode("46");
+                            hainan.setProvinceName("海南省");
+                            hainan.setCityCode("4600");
+                            hainan.setCityName("三亚市");
+                            hainan.setCountyCode(code);
+                            hainan.setCountyName(name);
+                            hainan.setCreateBy(1);
+                            hainan.setCreateTime(new Date());
+                            hainan.setUpdateBy(1);
+                            hainan.setUpdateTime(new Date());
+                            idCardMapper.insert(hainan);
+                            continue;
+                        }
+                        // 县级城市
+                        count ++ ;
+                        String proCode = code.substring(0,2);
+                        String cityCode = code.substring(0,4);
+
+                        IdCardExample example = new IdCardExample();
+                        IdCardExample.Criteria criteria = example.createCriteria();
+                        criteria.andProvinceCodeEqualTo(proCode);
+                        criteria.andCityCodeEqualTo(cityCode);
+                        List<IdCard> provinceList = idCardMapper.selectByExample(example);
+                        if(!CollectionUtils.isEmpty(provinceList)){
+                            IdCard city = provinceList.get(0);
+
+                            idCard.setProvinceCode(city.getProvinceCode());
+                            idCard.setProvinceName(city.getProvinceName());
+                            idCard.setCityCode(city.getCityCode());
+                            idCard.setCityName(city.getCityName());
+                            idCard.setCountyCode(code);
+                            idCard.setCountyName(name.replaceAll(city.getProvinceName(),"").replaceAll(city.getCityName(),""));
+                            idCard.setCreateBy(1);
+                            idCard.setCreateTime(new Date());
+                            idCard.setUpdateBy(1);
+                            idCard.setUpdateTime(new Date());
+                            idCardMapper.insert(idCard);
+                        }else{
+                            System.out.println("失败code:" + code);
+                        }
+
+                    }
+
+                }
+                System.out.println("总数量:" + count);
+                bufferedReader.close();
+                System.out.println("耗时:" + (System.currentTimeMillis() - startTime) + "ms");
+            }
+
+            return true;
+        }catch (Exception e){
+            System.out.println("第[" + line + "]行出错!");
+            return false;
+        }
+
+    }
+    public Integer countData(Integer type){
+        IdCardExample example = new IdCardExample();
+        IdCardExample.Criteria criteria = example.createCriteria();
+        switch (type){
+            case 1:{
+                // 省级数量
+                criteria.andProvinceCodeIsNotNull();
+                criteria.andCityCodeIsNull();
+                criteria.andCountyCodeIsNull();
+                break;
+            }
+            case 2:{
+                // 市级数量
+                criteria.andProvinceCodeIsNotNull();
+                criteria.andCityCodeIsNotNull();
+                criteria.andCountyCodeIsNull();
+                break;
+            }
+            case 3:{
+                // 县级数量
+                criteria.andProvinceCodeIsNotNull();
+                criteria.andCityCodeIsNotNull();
+                criteria.andCountyCodeIsNotNull();
+                break;
+            }
+        }
+        return idCardMapper.countByExample(example);
+    }
